@@ -1,0 +1,35 @@
+
+Create volume:
+docker volume create my-vol
+
+List volumes:
+docker volume ls
+
+Remove a volume:
+docker volume rm my-vol
+
+Inspect a volume:
+docker volume inspect my-vol
+
+Start a container with a volume
+docker run -d --name devtest --mount source=myvol2,target=/app nginx:latest
+docker run -d --name devtest -v myvol2:/app nginx:latest
+
+
+
+REGISTRY
+
+start registry
+docker run -d -p 5000:5000 --name registry registry:2
+
+Pull some image
+docker pull ubuntu
+
+Tag the image so that it points to your registry
+docker image tag ubuntu localhost:5000/myfirstimage
+
+Push
+docker push localhost:5000/myfirstimage
+
+Pull it from your local registry
+docker pull localhost:5000/myfirstimage

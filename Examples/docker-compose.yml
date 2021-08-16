@@ -1,0 +1,38 @@
+version: "3.9"
+services:
+  frontend:
+      container_name: Project
+      image: ${DOCKER_REGISTRY-}Project
+    build:
+      context: .
+      dockerfile: /Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT=Production
+      PG_HOST=$(pghost)
+      PG_DATABASE=Project_prod
+      PG_USERNAME=Project_admin
+      PG_PASSWORD=$(dbpass)
+      DEFAULT_ADMIN_NAME=admin
+      DEFAULT_ADMIN_PASSWORD=$(adminpass)
+      SMTP_SERVER=smtp.ru
+      SMTP_PORT=25
+      SMTP_USERNAME=rabota
+      SMTP_PASSWORD=$(smtppass)
+      SMTP_SENDER_EMAIL=rabo.ru
+      SMTP_SENDER_NAME=Работа
+      SMTP_ALT_SERVER=xxx.xxx.xx.xxx
+      SMTP_ALT_PORT=2525
+    volumes:
+      /usr/local/apps/rabo.ru/files:/app/docs
+      /usr/local/apps/rabo.ru/keyring:/app/keyring
+    networks:
+      - default
+    ports:
+      - "5201:80"
+  postgresql:
+    image: postgres
+    container_name: postgresql
+    volumes:
+      - /usr/local/apps/rabo.ru/postgresql/:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
